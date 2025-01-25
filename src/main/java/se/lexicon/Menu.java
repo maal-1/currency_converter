@@ -1,14 +1,57 @@
 package se.lexicon;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.time.temporal.ChronoUnit;
+import java.util.InputMismatchException;
 import java.util.Scanner;
 
 public class Menu {
 
+    private static Scanner input = new Scanner(System.in);;
+
     public static void menu () {
 
-        Scanner input = new Scanner(System.in);
-        int option;
+        int option = getOption();
+        double amount = getAmount();
 
+        double result = 0;
+
+        switch (option) {
+            case 1 -> result = Converter.sekToUsd(amount);
+            case 2 -> result = Converter.usdToSek(amount);
+            case 3 -> result = Converter.sekToEuro(amount);
+            case 4 -> result = Converter.euroToSek(amount);
+            default -> throw new IllegalStateException("Unexpected value: " + option);
+        }
+
+        LocalDateTime currentDateTime = LocalDateTime.now();
+        System.out.println("Result: " + String.format("%.2f", result) +
+                "\nTime: " +
+                currentDateTime.truncatedTo(ChronoUnit.MINUTES));
+    }
+
+    private static double getAmount() {
+        double amount = 0;
+        while (true) {
+            System.out.println("Enter the amount:");
+
+            //validating user amount input
+            try {
+                amount = input.nextDouble();
+                if (amount < 0) throw new InputMismatchException();
+                break;
+            } catch (Exception e) {
+                System.out.println("You have entered an invalid amount!");
+                //flush bad input
+                input.next();
+            }
+        }
+        return amount;
+    }
+
+    private static int getOption() {
+        int option;
         do {
             System.out.println("Choose one of the options below:" +
                     "\n1) Convert sek to usd" +
@@ -21,37 +64,21 @@ public class Menu {
             try {
                 option = input.nextInt();
 
+                //terminate the program
                 if (option == 0) System.exit(0);
 
-                if (validateOptionInput(option)) break;
-                    //specify the exception type
-                else throw new Exception();
+                //validating user option input
+                if (option > 0 && option < 5) break;
+                else throw new InputMismatchException();
 
             } catch (Exception e) {
                 System.out.println("You have entered an invalid input!");
+                //flush bad input
+                input.next();
             }
 
         } while (true);
-
-        System.out.println("Enter the amount:");
-        double amount = input.nextDouble();
-        double result = 0;
-
-
-        switch (option) {
-            case 1 -> result = Converter.sekToUsd(amount);
-            case 2 -> result = Converter.usdToSek(amount);
-            case 3 -> result = Converter.sekToEuro(amount);
-            case 4 -> result = Converter.euroToSek(amount);
-            default -> throw new IllegalStateException("Unexpected value: " + option);
-        }
-        System.out.println("Result are: " + result);
+        return option;
     }
-
-    private static boolean validateOptionInput(int option) {
-        if (option > 0 && option < 5) return true;
-        else return false;
-    }
-
 
 }
