@@ -1,9 +1,7 @@
 package se.lexicon;
 
 import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
-import java.util.InputMismatchException;
 import java.util.Scanner;
 
 public class Menu {
@@ -12,10 +10,12 @@ public class Menu {
 
     public static void menu () {
 
+        System.out.println("Currency Converter:");
+
         int option = getOption();
         double amount = getAmount();
 
-        double result = 0;
+        double result;
 
         switch (option) {
             case 1 -> result = Converter.sekToUsd(amount);
@@ -26,9 +26,9 @@ public class Menu {
         }
 
         LocalDateTime currentDateTime = LocalDateTime.now();
+
         System.out.println("Result: " + String.format("%.2f", result) +
-                "\nTime: " +
-                currentDateTime.truncatedTo(ChronoUnit.MINUTES));
+                "\nTime: " + currentDateTime.truncatedTo(ChronoUnit.MINUTES));
     }
 
 
@@ -36,7 +36,7 @@ public class Menu {
 
 
     private static double getAmount() {
-        double amount = 0;
+        double amount;
         while (true) {
             System.out.println("Enter the amount:");
 
@@ -63,13 +63,14 @@ public class Menu {
     private static int getOption() {
         int option;
         do {
-            System.out.println("Choose one of the options below:" +
-                    "\n1) Convert sek to usd" +
-                    "\n2) Convert usd to sek" +
-                    "\n3) Convert sek to euro" +
-                    "\n4) Convert euro to sek" +
-                    "\n0) Exit" +
-                    "\nEnter your choice:");
+            System.out.println("""
+                    Choose one of the options below:
+                    1) Convert sek to usd
+                    2) Convert usd to sek
+                    3) Convert sek to euro
+                    4) Convert euro to sek
+                    0) Exit
+                    Enter your choice:""");
 
             try {
                 option = input.nextInt();
@@ -89,6 +90,7 @@ public class Menu {
             }
 
         } while (true);
+
         return option;
     }
 
