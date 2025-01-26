@@ -8,7 +8,7 @@ import java.util.Scanner;
 
 public class Menu {
 
-    private static Scanner input = new Scanner(System.in);;
+    private static Scanner input = new Scanner(System.in);
 
     public static void menu () {
 
@@ -31,6 +31,10 @@ public class Menu {
                 currentDateTime.truncatedTo(ChronoUnit.MINUTES));
     }
 
+
+
+
+
     private static double getAmount() {
         double amount = 0;
         while (true) {
@@ -38,10 +42,13 @@ public class Menu {
 
             //validating user amount input
             try {
+
                 amount = input.nextDouble();
-                if (amount < 0) throw new InputMismatchException();
-                break;
+                if (amount < 0) System.out.println("You have entered negative number!");
+                else break;
+
             } catch (Exception e) {
+
                 System.out.println("You have entered an invalid amount!");
                 //flush bad input
                 input.next();
@@ -49,6 +56,9 @@ public class Menu {
         }
         return amount;
     }
+
+
+
 
     private static int getOption() {
         int option;
@@ -69,7 +79,8 @@ public class Menu {
 
                 //validating user option input
                 if (option > 0 && option < 5) break;
-                else throw new InputMismatchException();
+                else System.out.println("You have entered incorrect number!");
+
 
             } catch (Exception e) {
                 System.out.println("You have entered an invalid input!");
